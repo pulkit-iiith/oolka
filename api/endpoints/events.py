@@ -13,7 +13,11 @@ def list_events(db: Session = Depends(get_db)):
 
 @router.post("/", response_model=Event)
 def create_new_event(event: EventCreate, db: Session = Depends(get_db)):
-    return EventService.create_event(db=db, event=event)
+    try:
+        created_event = EventService.create_event(db, event)
+        return created_event
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
 
 @router.get("/{id}", response_model=Event)
 def read_event(id: int, db: Session = Depends(get_db)):
