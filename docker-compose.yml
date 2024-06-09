@@ -19,7 +19,6 @@ services:
     image: mysql:latest
     environment:
       - MYSQL_HOST=mysql
-      - MYSQL_USER=root
       - MYSQL_PASSWORD=admin
       - MYSQL_DB=test
       - MYSQL_ROOT_PASSWORD=admin
