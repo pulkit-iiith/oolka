@@ -7,7 +7,7 @@ from sqlalchemy_utils import database_exists, create_database as _create_databas
 # MySQL configuration
 MYSQL_USER = "root"
 MYSQL_PASSWORD = ""
-MYSQL_DB = "raja"
+MYSQL_DB = "test"
 MYSQL_HOST = "localhost"  # Or any other MySQL host address
 
 # MySQL connection URL
