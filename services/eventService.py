@@ -18,7 +18,8 @@ class EventService:
         # Check if an event with the same name and date already exists
         existing_event = db.query(EventModel).filter(
             EventModel.name == event.name,
-            EventModel.date == event.date
+            EventModel.date == event.date,
+            EventModel.event_type == event.event_type
         ).first()
 
         if existing_event:
@@ -31,7 +32,8 @@ class EventService:
             date=event.date,
             location=event.location,
             total_tickets=event.total_tickets,
-            available_tickets=event.total_tickets
+            available_tickets=event.total_tickets,
+            event_type=event.event_type
         )
         db.add(db_event)
         TransactionManager.commit_with_refresh(db, db_event)
