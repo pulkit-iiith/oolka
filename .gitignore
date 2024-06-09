@@ -1,5 +1,15 @@
-# Byte-compiled / optimized / DLL files
+# Ignore Python byte code files
+*.pyc
+
+# Ignore system-specific files
 __pycache__/
+.DS_Store
 
+# Ignore virtual environment directories
+.venv/
+venv/
+env/
+.env
 
-
+# ignore db
+.db
