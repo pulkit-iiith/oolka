@@ -9,8 +9,6 @@ class EventBase(BaseModel):
     location: str
     total_tickets: int
     ticket_price: int
-    place_lat: Optional[str] = None
-    place_lng: Optional[str] = None
     event_type: EventType
 
 
@@ -20,6 +18,8 @@ class EventCreate(EventBase):
 class Event(EventBase):
     id: int
     available_tickets: int
+    place_lat: str
+    place_lng: str
 
     class Config:
         orm_mode = True

@@ -13,6 +13,6 @@ class Event(Base):
     available_tickets = Column(Integer)
     ticket_price = Column(Integer)
     event_type = Column(SqlEnum(EventType), nullable=False)
-    place_lat = Column(String(50), nullable=True)  # Latitude
-    place_lng = Column(String(50), nullable=True)  # Longitude
+    place_lat = Column(String(50))  # Latitude
+    place_lng = Column(String(50))  # Longitude
 
