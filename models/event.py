@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, Enum as SqlEnum
+from sqlalchemy import Column, Integer, String, DateTime, Float, Enum as SqlEnum
 from db.base import Base
 from utils.enum import EventType
 
@@ -11,4 +11,8 @@ class Event(Base):
     location = Column(String(255))
     total_tickets = Column(Integer)
     available_tickets = Column(Integer)
+    ticket_price = Column(Integer)
     event_type = Column(SqlEnum(EventType), nullable=False)
+    place_lat = Column(String(50))  # Latitude
+    place_lng = Column(String(50))  # Longitude
+
