@@ -7,6 +7,7 @@ class EventBase(BaseModel):
     date: datetime
     location: str
     total_tickets: int
+    ticket_price: int
     event_type: EventType
 
 
