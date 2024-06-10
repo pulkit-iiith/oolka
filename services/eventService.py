@@ -3,6 +3,7 @@ from models.event import Event as EventModel
 from schemas.event import EventCreate
 from db.transaction import TransactionManager
 from fastapi import HTTPException
+from services.adaptor.GoogleMapsAdapter import GoogleMapsAdapter
 
 class EventService:
     @staticmethod
@@ -25,6 +26,9 @@ class EventService:
         if existing_event:
             # Raise an exception or return a response indicating duplication
             raise ValueError(f"An event with the name '{event.name}' on date '{event.date}' already exists.")
+        
+        # Use the adapter to fetch latitude and longitude
+        place_lat, place_lng = GoogleMapsAdapter.get_lat_lng(event.location)
 
         # If no duplicate is found, proceed to create the event
         db_event = EventModel(
@@ -33,7 +37,10 @@ class EventService:
             location=event.location,
             total_tickets=event.total_tickets,
             available_tickets=event.total_tickets,
-            event_type=event.event_type
+            ticket_price=event.ticket_price,
+            event_type=event.event_type,
+            place_lat = place_lat,
+            place_lng = place_lng
         )
         db.add(db_event)
         TransactionManager.commit_with_refresh(db, db_event)

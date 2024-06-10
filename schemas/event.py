@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from datetime import datetime
 from utils.enum import EventType
+from typing import Optional
 
 class EventBase(BaseModel):
     name: str
@@ -8,6 +9,8 @@ class EventBase(BaseModel):
     location: str
     total_tickets: int
     ticket_price: int
+    place_lat: Optional[str] = None
+    place_lng: Optional[str] = None
     event_type: EventType
 
 
