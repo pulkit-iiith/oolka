@@ -49,13 +49,13 @@ def test_list_events(setup_db):
     response = client.get("/events/")
     assert response.status_code == 200
     data = response.json()
-    assert data == [{'name': 'Test Event', 'location': 'Test Location', 'total_tickets': 100, 'available_tickets': 100, 'date': '2023-12-31T00:00:00', 'event_type': 'music festival', 'id': 1}]
+    assert data == [{'name': 'Test Event', 'location': 'Test Location', 'total_tickets': 100, 'available_tickets': 100, 'place_lat': '40.7128', 'place_lng': '-74.0060', "ticket_price": 50, 'date': '2023-12-31T00:00:00', 'event_type': 'music festival', 'id': 1}]
 
 def test_get_events(setup_db):
     response = client.get("/events/1")
     assert response.status_code == 200
     data = response.json()
-    assert data == {'name': 'Test Event', 'location': 'Test Location', 'total_tickets': 100, 'available_tickets': 100, 'date': '2023-12-31T00:00:00', 'event_type': 'music festival', 'id': 1}
+    assert data == {'name': 'Test Event', 'location': 'Test Location', 'total_tickets': 100, 'available_tickets': 100, "ticket_price": 50, 'place_lat': '40.7128', 'place_lng': '-74.0060', 'date': '2023-12-31T00:00:00', 'event_type': 'music festival', 'id': 1}
 
 
 def test_create_duplicate_event(setup_db):
