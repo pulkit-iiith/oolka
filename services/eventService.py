@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from models.event import Event as EventModel
+from models.user import User as UserModel
 from schemas.event import EventCreate
 from db.transaction import TransactionManager
 from fastapi import HTTPException
@@ -15,7 +16,15 @@ class EventService:
         return db.query(EventModel).filter(EventModel.id == event_id).first()
 
     @staticmethod
-    def create_event(db: Session, event: EventCreate):
+    def create_event(db: Session, event: EventCreate, user_id: int):
+        user = db.query(UserModel).filter(UserModel.id == user_id).first()
+
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        if not user.is_admin:
+            raise HTTPException(status_code=403, detail="You do not have rights to create an event")
+        
         # Check if an event with the same name and date already exists
         existing_event = db.query(EventModel).filter(
             EventModel.name == event.name,
