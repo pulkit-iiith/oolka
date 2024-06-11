@@ -8,4 +8,8 @@ router = APIRouter()
 
 @router.post("/{event_id}/book", response_model=BookingResponse)
 def book_event_tickets(event_id: int, booking: BookingRequest, db: Session = Depends(get_db)):
-    return BookingService.book_tickets(db, event_id, booking.tickets,booking.payment_source)
+    try:
+        book_tickets=BookingService.book_tickets(db, event_id, booking.tickets,booking.payment_source)
+        return book_tickets
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))

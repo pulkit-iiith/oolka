@@ -4,6 +4,8 @@ from typing import List
 from schemas.event import Event, EventCreate
 from services.eventService import EventService
 from dependencies.database import get_db
+from dependencies.auth import get_current_user
+from models.user import User as UserModel
 
 router = APIRouter()
 
@@ -12,9 +14,13 @@ def list_events(db: Session = Depends(get_db)):
     return EventService.get_events(db)
 
 @router.post("/", response_model=Event)
-def create_new_event(event: EventCreate, db: Session = Depends(get_db)):
+def create_new_event(
+    event: EventCreate,
+    db: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user)
+):
     try:
-        created_event = EventService.create_event(db, event)
+        created_event = EventService.create_event(db, event,current_user.id)
         return created_event
     except ValueError as ve:
         raise HTTPException(status_code=400, detail=str(ve))

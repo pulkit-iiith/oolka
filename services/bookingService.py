@@ -11,9 +11,9 @@ class BookingService:
     def book_tickets(db: Session, event_id: int, tickets: int, payment_source: float) -> BookingResponse:
         event = db.query(EventModel).filter(EventModel.id == event_id).first()
         if not event:
-            raise HTTPException(status_code=404, detail="Event not found")
+            raise ValueError("Event not found")
         if event.available_tickets < tickets:
-            raise HTTPException(status_code=400, detail="Not enough tickets available")
+            raise ValueError("Not enough tickets available")
         
 
         # Calculate total cost
