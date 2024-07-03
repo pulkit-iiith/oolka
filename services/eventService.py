@@ -6,6 +6,7 @@ from db.transaction import TransactionManager
 from fastapi import HTTPException
 from services.adaptor.GoogleMapsAdapter import GoogleMapsAdapter
 
+
 class EventService:
     @staticmethod
     def get_events(db: Session):
@@ -23,19 +24,30 @@ class EventService:
             raise HTTPException(status_code=404, detail="User not found")
 
         if not user.is_admin:
-            raise HTTPException(status_code=403, detail="You do not have rights to create an event")
-        
+            raise HTTPException(
+                status_code=403, detail="You do not have rights to create an event"
+            )
+
+        if not event.name.strip():
+            raise HTTPException(status_code=403, detail="Enter valid name")
+
         # Check if an event with the same name and date already exists
-        existing_event = db.query(EventModel).filter(
-            EventModel.name == event.name,
-            EventModel.date == event.date,
-            EventModel.event_type == event.event_type
-        ).first()
+        existing_event = (
+            db.query(EventModel)
+            .filter(
+                EventModel.name == event.name,
+                EventModel.date == event.date,
+                EventModel.event_type == event.event_type,
+            )
+            .first()
+        )
 
         if existing_event:
             # Raise an exception or return a response indicating duplication
-            raise ValueError(f"An event with the name '{event.name}' on date '{event.date}' already exists.")
-        
+            raise ValueError(
+                f"An event with the name '{event.name}' on date '{event.date}' already exists."
+            )
+
         # Use the adapter to fetch latitude and longitude
         place_lat, place_lng = GoogleMapsAdapter.get_lat_lng(event.location)
 
@@ -48,8 +60,8 @@ class EventService:
             available_tickets=event.total_tickets,
             ticket_price=event.ticket_price,
             event_type=event.event_type,
-            place_lat = place_lat,
-            place_lng = place_lng
+            place_lat=place_lat,
+            place_lng=place_lng,
         )
         db.add(db_event)
         TransactionManager.commit_with_refresh(db, db_event)
