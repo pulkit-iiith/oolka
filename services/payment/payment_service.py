@@ -4,5 +4,6 @@ class PaymentService:
     def __init__(self, processor: PaymentProcessor):
         self.processor = processor
 
-    def process_payment(self, amount: int, currency: str, source: str, description: str):
-        return self.processor.process_payment(amount, currency, source, description)
+    def create_checkout_session(self, amount: int, currency: str, description: str, success_url: str, cancel_url: str):
+        return self.processor.create_checkout_session(amount, currency, description, success_url, cancel_url)
+

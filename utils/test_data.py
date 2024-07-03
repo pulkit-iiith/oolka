@@ -9,12 +9,14 @@ event_data = {
 
 booking_data = {
     "tickets": 1,
-    "payment_source": "test source"
+    "success_url": "https://www.example.com/success",
+    "cancel_url": "https://www.example.com/cancel"
 }
 
 tickets_not_available_data = {
     "tickets": 101,
-    "payment_source": "test source"
+    "success_url": "https://www.example.com/success",
+    "cancel_url": "https://www.example.com/cancel"
 }
 
 user_data_admin = {

@@ -5,18 +5,26 @@ class StripeAdapter(PaymentProcessor):
     def __init__(self, api_key: str):
         stripe.api_key = api_key
 
-    def process_payment(self, amount: int, currency: str, source: str, description: str):
+    def create_checkout_session(self, amount: int, currency: str, description: str, success_url: str, cancel_url: str):
         try:
-            # charge = stripe.Charge.create(
-            #     amount=amount,
-            #     currency=currency,
-            #     source=source,
-            #     description=description
-            # )
-            # return charge
-            print({"amount":amount,
-                "currency":currency,
-                "source":source,
-                "description":description})
+            session = stripe.checkout.Session.create(
+                payment_method_types=['card'],
+                line_items=[{
+                    'price_data': {
+                        'currency': currency,
+                        'product_data': {
+                            'name': description,
+                        },
+                        'unit_amount': amount,
+                    },
+                    'quantity': 1,
+                }],
+                mode='payment',
+                success_url=success_url,
+                cancel_url=cancel_url,
+            )
+            return session
         except stripe.error.StripeError as e:
-            raise ValueError(f"Payment failed: {e.user_message}")
+            raise ValueError(f"Checkout session creation failed: {e.user_message}")
+
+
