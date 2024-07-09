@@ -62,6 +62,7 @@ class EventService:
             event_type=event.event_type,
             place_lat=place_lat,
             place_lng=place_lng,
+            userid=user_id,
         )
         db.add(db_event)
         TransactionManager.commit_with_refresh(db, db_event)

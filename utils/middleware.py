@@ -5,6 +5,7 @@ from jose import jwt, JWTError
 from utils.JWTManager import JWTManager
 from fastapi.responses import JSONResponse
 
+
 class AuthMiddleware(BaseHTTPMiddleware):
     def __init__(self, app: ASGIApp, jwt_manager: JWTManager):
         super().__init__(app)
@@ -15,8 +16,14 @@ class AuthMiddleware(BaseHTTPMiddleware):
         if request.method == "GET" and request.url.path.startswith("/events"):
             response = await call_next(request)
             return response
-        
-        if request.url.path.startswith("/events") or request.url.path.startswith("/bookings"):
+
+        if request.url.path.startswith("/bookings/webhook/"):
+            response = await call_next(request)
+            return response
+
+        if request.url.path.startswith("/events") or request.url.path.startswith(
+            "/bookings"
+        ):
             try:
                 auth_header = request.headers.get("Authorization")
                 if not auth_header:
@@ -32,5 +39,6 @@ class AuthMiddleware(BaseHTTPMiddleware):
                 # raise HTTPException(status_code=401, detail="Invalid token")
         response = await call_next(request)
         return response
+
     def error_response(self, detail: str):
         return JSONResponse(status_code=401, content={"detail": detail})

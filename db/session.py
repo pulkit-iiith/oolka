@@ -13,7 +13,9 @@ MYSQL_DB = os.getenv("MYSQL_DB")
 MYSQL_HOST = os.getenv("MYSQL_HOST")
 
 # MySQL connection URL
-SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}/{MYSQL_DB}"
+SQLALCHEMY_DATABASE_URL = (
+    f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}/{MYSQL_DB}"
+)
 
 # Create the MySQL engine
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
@@ -24,8 +26,10 @@ def create_database():
     if not database_exists(engine.url):
         _create_database(engine.url)
 
+
 # Create a session class
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
 
 # Function to get a database session
 def get_db():
@@ -34,3 +38,7 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+def get_url():
+    return SQLALCHEMY_DATABASE_URL

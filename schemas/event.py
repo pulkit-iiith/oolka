@@ -22,6 +22,7 @@ class Event(EventBase):
     available_tickets: int
     place_lat: str
     place_lng: str
+    userid: int
 
     class Config:
         orm_mode = True
