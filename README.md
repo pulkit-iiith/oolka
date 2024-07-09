@@ -1,4 +1,4 @@
-# YouTube Video Fetch API
+# Event Booking System with Payment Integration
 
 This FastAPI application serves as an Event Manager API that allows users to manage events and book tickets for these events.
 The application is structured with separate endpoints for handling events and bookings.
